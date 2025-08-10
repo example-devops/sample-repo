@@ -1,0 +1,35 @@
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
+const logger = require('./middleware/logger');
+
+const app = express();
+const port = 3000;
+
+app.use(cors());
+app.use(logger);
+
+// Serve frontend files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Fortunes array
+const fortunes = [
+  "🌟 You will do something amazing today!",
+  "💡 A new idea will lead you to success.",
+  "🍀 Luck is on your side – go for it!",
+  "🧠 Wisdom will come from an unexpected place.",
+  "🎯 Your focus will bring great results.",
+  "🌈 Happiness begins with a choice – choose joy!",
+  "🚀 Great adventures are just ahead!"
+];
+
+// API route
+app.get('/api/fortune', (req, res) => {
+  const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+  res.json({ fortune });
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
