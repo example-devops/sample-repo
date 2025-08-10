@@ -1,12 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+
+const logger = require('./middleware/logger');
 
 const app = express();
 const port = 3000;
 
-// Enable CORS so frontend can talk to backend
 app.use(cors());
+app.use(logger);
 
+// Serve frontend files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Fortunes array
 const fortunes = [
   "🌟 You will do something amazing today!",
   "💡 A new idea will lead you to success.",
@@ -17,11 +24,12 @@ const fortunes = [
   "🚀 Great adventures are just ahead!"
 ];
 
+// API route
 app.get('/api/fortune', (req, res) => {
-  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-  res.json({ fortune: randomFortune });
+  const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+  res.json({ fortune });
 });
 
 app.listen(port, () => {
-  console.log(`Fortune Cookie API running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });
