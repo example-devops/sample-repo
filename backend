@@ -1,0 +1,27 @@
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+const port = 3000;
+
+// Enable CORS so frontend can talk to backend
+app.use(cors());
+
+const fortunes = [
+  "🌟 You will do something amazing today!",
+  "💡 A new idea will lead you to success.",
+  "🍀 Luck is on your side – go for it!",
+  "🧠 Wisdom will come from an unexpected place.",
+  "🎯 Your focus will bring great results.",
+  "🌈 Happiness begins with a choice – choose joy!",
+  "🚀 Great adventures are just ahead!"
+];
+
+app.get('/api/fortune', (req, res) => {
+  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+  res.json({ fortune: randomFortune });
+});
+
+app.listen(port, () => {
+  console.log(`Fortune Cookie API running at http://localhost:${port}`);
+});
