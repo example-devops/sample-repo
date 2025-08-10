@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Digital Fortune Cookie</title>
   <style>
     body {
@@ -14,22 +14,18 @@
       margin: 0;
       flex-direction: column;
     }
-
     .cookie {
       background: #f7c59f;
       border-radius: 50% 50% 0 0;
       width: 200px;
       height: 100px;
-      position: relative;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       cursor: pointer;
       transition: transform 0.3s;
     }
-
     .cookie:hover {
       transform: scale(1.05);
     }
-
     .fortune {
       display: none;
       background: #fff8dc;
@@ -42,7 +38,6 @@
       text-align: center;
       border-radius: 10px;
     }
-
     h1 {
       margin-bottom: 40px;
       color: #8b5e3c;
@@ -52,24 +47,20 @@
 <body>
 
   <h1>🥠 Click the Cookie for a Fortune</h1>
-  <div class="cookie" onclick="openCookie()"></div>
+  <div class="cookie" onclick="getFortune()"></div>
   <div class="fortune" id="fortuneText"></div>
 
   <script>
-    const fortunes = [
-      "🌟 You will do something amazing today!",
-      "💡 A new idea will lead you to success.",
-      "🍀 Luck is on your side – go for it!",
-      "🧠 Wisdom will come from an unexpected place.",
-      "🎯 Your focus will bring great results.",
-      "🌈 Happiness begins with a choice – choose joy!"
-    ];
-
-    function openCookie() {
-      const fortune = fortunes[Math.floor(Math.random() * fortunes.length)];
-      const fortuneDiv = document.getElementById("fortuneText");
-      fortuneDiv.textContent = fortune;
-      fortuneDiv.style.display = "block";
+    async function getFortune() {
+      try {
+        const res = await fetch('/api/fortune');
+        const data = await res.json();
+        const fortuneDiv = document.getElementById('fortuneText');
+        fortuneDiv.textContent = data.fortune;
+        fortuneDiv.style.display = 'block';
+      } catch (err) {
+        console.error('Failed to fetch fortune:', err);
+      }
     }
   </script>
 
